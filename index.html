@@ -24,7 +24,6 @@
             color: #fff;
         }
 
-        /* خلفية نيون رقمية خفيفة وسريعة */
         .fast-cyber-bg {
             position: fixed; inset: 0; z-index: 1; pointer-events: none;
             background: 
@@ -79,7 +78,6 @@
         }
         .cyber-btn:active { transform: scale(0.98); }
 
-        /* سلايدر خفيف وسريع الاستجابة على الهواتف */
         .carousel-container {
             width: 100%; height: 320px;
             position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;
@@ -122,11 +120,16 @@
         }
         @keyframes radarSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .game-screen { width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 15; background: #030712; }
+        .game-screen { 
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; 
+            z-index: 50; background: #030712; 
+        }
         .game-header {
             padding: 12px 15px; background: rgba(10, 15, 30, 0.95);
             border-bottom: 2px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center;
-            margin-top: 25px;
+            margin-top: 30px;
         }
         .back-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--neon-blue); background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); font-weight: bold; cursor: pointer; font-size: 0.85rem; }
         .attempts-hud { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--neon-green); color: var(--neon-green); background: rgba(0, 255, 102, 0.1); font-family: monospace; font-weight: bold; font-size: 0.85rem; }
@@ -220,7 +223,7 @@
     </div>
 </div>
 
-<!-- قائمة الألعاب السريعة الخفيفة -->
+<!-- قائمة الألعاب -->
 <div id="screen-lobby" class="app-overlay" style="display: none;">
     <div style="display: flex; justify-content: space-between; align-items: center; width: 88%; max-width: 600px; margin-top: 20px;">
         <h2 style="font-size: 1.2rem; color: #fff;">اختر اللعبة 🎮</h2>
@@ -236,7 +239,7 @@
     </div>
 </div>
 
-<!-- شاشة الرادار السريعة -->
+<!-- شاشة الرادار -->
 <div id="screen-radar" class="app-overlay" style="display: none;">
     <div class="radar-box"></div>
     <div id="radar-status-text" style="font-size: 0.95rem; color: var(--neon-blue); font-weight: bold;">جاري سحب بيانات السيرفر...</div>
@@ -336,7 +339,7 @@
         document.getElementById('game-attempts-hud').innerText = `🎮 ${att}`;
     }
 
-    // --- 2. Fast Carousel (سريع ومناسب للهواتف) ---
+    // --- 2. Carousel ---
     const gamesList = [
         { id: 'apple', title: 'Apple 🍎', icon: '🍎' },
         { id: 'gems', title: 'Gems & Mines 💎', icon: '💎' },
@@ -391,9 +394,13 @@
         }, 400);
     }
 
+    // دالة إظهار وإخفاء الشاشات
     function showScreen(screenId) {
         document.querySelectorAll('.app-overlay, .game-screen').forEach(s => s.style.display = 'none');
-        document.getElementById(screenId).style.display = 'flex';
+        let targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.style.display = 'flex';
+        }
     }
 
     // --- 3. Game Boards ---
