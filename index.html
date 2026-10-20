@@ -3,1186 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CYBER TERMINAL VIP 🎮</title>
+    <title>MULTI-GAMES CYBER VIP 🎮</title>
+
     <style>
         :root {
-            --bg-color: #02040a;
-            --cyber-cyan: #00f3ff;
-            --cyber-green: #00ff66;
-            --cyber-magenta: #ff0055;
-            --cyber-purple: #8000ff;
-            --glass-card: rgba(10, 16, 30, 0.75);
-            --border-neon: 1px solid rgba(0, 243, 255, 0.4);
-            --glow-effect: 0 0 20px rgba(0, 243, 255, 0.35);
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff0055;
+            --neon-green: #00ff66;
+            --bg-dark: #030712;
+            --glow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 
-        body {
-            background-color: var(--bg-color);
+        body, html {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
-            font-family: 'Consolas', 'Segoe UI', monospace;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-            user-select: none;
         }
 
-        /* خلفية شبكية مستقبليية */
-        #matrix-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
+        /* خلفية نيون رقمية خفيفة وسريعة */
+        .fast-cyber-bg {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+            background: 
+                radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 50% 80%, rgba(0, 255, 102, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #030712 0%, #080e1e 100%);
         }
 
-        /* خطوط التلفاز المستقبلية Scanlines */
-        body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 20;
-            pointer-events: none;
-            opacity: 0.6;
+        .app-overlay {
+            position: absolute; inset: 0; z-index: 10;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(3, 7, 18, 0.85);
         }
 
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 4, 10, 0.92);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            flex-direction: column;
-        }
-
-        /* شريط التشفير العلوي */
         .cyber-ticker {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: rgba(6, 11, 25, 0.95);
-            border-bottom: 2px solid var(--cyber-cyan);
-            color: var(--cyber-cyan);
-            font-size: 0.72rem;
-            padding: 8px 15px;
-            text-align: center;
-            z-index: 2500;
-            box-shadow: var(--glow-effect);
-            letter-spacing: 1.5px;
-            overflow: hidden;
-            white-space: nowrap;
-            backdrop-filter: blur(10px);
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(10, 15, 30, 0.95);
+            border-bottom: 2px solid var(--neon-blue);
+            color: var(--neon-blue); font-size: 0.78rem; padding: 8px 15px;
+            text-align: center; z-index: 100; overflow: hidden; white-space: nowrap;
         }
         .cyber-ticker span {
-            display: inline-block;
-            animation: tickerSlide 18s linear infinite;
+            display: inline-block; animation: tickerSlide 16s linear infinite;
         }
-        @keyframes tickerSlide {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        @keyframes tickerSlide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        .login-card {
+            background: rgba(15, 23, 42, 0.95);
+            width: 88%; max-width: 360px; padding: 30px 20px;
+            border-radius: 20px; border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25); text-align: center;
+            position: relative; z-index: 20;
+        }
+        .login-card h2 {
+            font-size: 1.3rem; letter-spacing: 2px;
+            color: var(--neon-blue); margin-bottom: 12px; font-weight: 900;
         }
 
-        /* كارت دخول هولوجرام فريد */
-        .login-card-bg {
-            background: linear-gradient(145deg, rgba(10, 16, 30, 0.85), rgba(2, 4, 10, 0.95)), url('https://cdn.imagetourls.com/uploads/tyImg/13edEZt7M.jpg');
-            background-size: cover;
-            background-position: center;
-            width: 88%;
-            max-width: 380px;
-            border-radius: 20px;
-            border: 2px solid var(--cyber-cyan);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 35px 20px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.3), inset 0 0 25px rgba(128, 0, 255, 0.3);
-            backdrop-filter: blur(15px);
-            clip-path: polygon(0 0, 92% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%);
+        input {
+            width: 100%; padding: 12px; margin: 10px 0;
+            border-radius: 10px; border: 1px solid var(--neon-blue);
+            background: rgba(3, 7, 18, 0.9); color: var(--neon-blue);
+            text-align: center; font-size: 1rem; outline: none;
+        }
+        input:focus { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+
+        .cyber-btn {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            background: linear-gradient(90deg, var(--neon-blue), #0066ff);
+            color: #fff; font-weight: bold; font-size: 0.95rem; cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transition: transform 0.1s;
+        }
+        .cyber-btn:active { transform: scale(0.98); }
+
+        /* سلايدر خفيف وسريع الاستجابة على الهواتف */
+        .carousel-container {
+            width: 100%; height: 320px;
+            position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;
+        }
+        .carousel-wheel {
+            width: 220px; height: 290px; position: relative;
+        }
+        .carousel-card {
+            position: absolute; inset: 0;
+            border-radius: 18px; background: rgba(15, 23, 42, 0.95);
+            border: 2px solid var(--neon-blue);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 15px; gap: 12px; cursor: pointer;
+            opacity: 0; transform: scale(0.85); transition: all 0.25s ease-out; pointer-events: none;
+        }
+        .carousel-card.active {
+            opacity: 1; transform: scale(1); pointer-events: auto;
+            border-color: var(--neon-green); box-shadow: 0 0 25px rgba(0, 255, 102, 0.3);
+        }
+        .game-icon-large { font-size: 4rem; }
+        .game-title-large { font-size: 1.2rem; font-weight: bold; color: #fff; }
+
+        .carousel-controls { display: flex; gap: 15px; margin-top: 5px; align-items: center; }
+        .nav-btn {
+            width: 46px; height: 46px; border-radius: 50%;
+            border: 2px solid var(--neon-blue); background: rgba(10, 15, 30, 0.9);
+            color: var(--neon-blue); font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .login-card-bg h2 {
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--cyber-cyan), 0 0 20px var(--cyber-cyan);
-            margin-bottom: 15px;
-            font-weight: 900;
+        .radar-box {
+            width: 90px; height: 90px; border-radius: 50%;
+            border: 2px solid var(--neon-blue); position: relative; margin-bottom: 15px;
+            overflow: hidden; background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
         }
+        .radar-box::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 50%; height: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), transparent);
+            transform-origin: 0 0; animation: radarSweep 1.2s linear infinite;
+        }
+        @keyframes radarSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .login-box {
-            background: var(--glass-card);
-            padding: 25px 18px;
-            border-radius: 20px;
-            border: var(--border-neon);
-            text-align: center;
-            width: 92%;
-            max-width: 440px;
-            box-shadow: var(--glow-effect);
-            backdrop-filter: blur(20px);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid var(--cyber-cyan);
-            background: rgba(4, 8, 20, 0.95);
-            color: var(--cyber-cyan);
-            text-align: center;
-            font-size: 1rem;
-            outline: none;
-            font-family: inherit;
-            box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.2);
-            transition: all 0.3s;
-        }
-        input:focus {
-            border-color: var(--cyber-green);
-            box-shadow: 0 0 20px var(--cyber-green), inset 0 0 10px rgba(0,255,102,0.3);
-        }
-
-        /* ماسح رادار هولوجرام مذهل للمحاكاة */
-        .holo-scanner {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 2px dashed var(--cyber-cyan);
-            position: relative;
-            margin: 0 auto 15px auto;
-            animation: holoRotate 4s linear infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px var(--cyber-cyan);
-        }
-        .holo-scanner-inner {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid var(--cyber-magenta);
-            animation: holoRotateReverse 2s linear infinite;
-        }
-        @keyframes holoRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes holoRotateReverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
-
-        .lobby-wrapper {
-            width: 92%;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            align-items: center;
-        }
-
-        .games-row-top {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            width: 100%;
-        }
-
-        .games-row-bottom {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            width: 70%;
-            margin: 0 auto;
-        }
-
-        /* كروت الألعاب بتصميم هولوجرام مائل 3D */
-        .game-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(4, 8, 20, 0.95));
-            border: 1px solid var(--cyber-cyan);
-            padding: 25px 10px;
-            border-radius: 16px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-            clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%);
-        }
-        .game-card:hover {
-            border-color: var(--cyber-green);
-            transform: translateY(-8px) scale(1.04);
-            box-shadow: 0 0 30px var(--cyber-green);
-        }
-        .game-card span.game-icon { font-size: 2.8rem; filter: drop-shadow(0 0 10px var(--cyber-cyan)); }
-        .game-card span.game-name { color: #fff; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; }
-
-        .header {
-            padding: 16px 20px;
-            background: rgba(6, 11, 25, 0.95);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            border-bottom: 2px solid var(--cyber-cyan);
-            font-size: 1.1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            box-shadow: var(--glow-effect);
+        .game-screen { width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 15; background: #030712; }
+        .game-header {
+            padding: 12px 15px; background: rgba(10, 15, 30, 0.95);
+            border-bottom: 2px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center;
             margin-top: 25px;
         }
-        .back-btn { background: rgba(0,243,255,0.1); color: var(--cyber-cyan); border: 1px solid var(--cyber-cyan); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
+        .back-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--neon-blue); background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+        .attempts-hud { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--neon-green); color: var(--neon-green); background: rgba(0, 255, 102, 0.1); font-family: monospace; font-weight: bold; font-size: 0.85rem; }
 
-        .row-wrapper { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 6px; opacity: 0.35; pointer-events: none; transition: 0.4s; }
-        .row-wrapper.active { opacity: 1; pointer-events: auto; }
-        .row-cells { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-
-        .row-reveal-container { display: flex; gap: 8px; width: 100%; align-items: center; }
-        .row-reveal-btn { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-purple)); color: #fff; border: none; padding: 9px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.82rem; flex: 1; box-shadow: 0 0 15px rgba(0,243,255,0.4); }
-
-        .confidence-badge { font-size: 0.72rem; color: var(--cyber-green); background: rgba(0,255,102,0.1); border: 1px solid var(--cyber-green); padding: 5px 8px; border-radius: 6px; font-family: monospace; white-space: nowrap; }
-
-        #game-board-apple { flex: 1; overflow-y: auto; display: flex; flex-direction: column-reverse; gap: 8px; padding: 14px; align-items: center; }
-        .apple-brick { height: 42px; background: rgba(10, 16, 30, 0.85); border-radius: 10px; border: 1px solid rgba(0,243,255,0.2); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
-        .revealed-apple { background: rgba(0, 255, 102, 0.2) !important; border-color: var(--cyber-green) !important; box-shadow: 0 0 15px var(--cyber-green); }
-        .revealed-bomb { background: rgba(255, 0, 85, 0.2) !important; border-color: var(--cyber-magenta) !important; box-shadow: 0 0 15px var(--cyber-magenta); }
-
-        .gems-container { background: rgba(6, 11, 25, 0.95); border: 2px solid var(--cyber-cyan); padding: 24px 18px; border-radius: 20px; text-align: center; width: 340px; margin: auto; box-shadow: var(--glow-effect); display: flex; flex-direction: column; gap: 14px; }
-        .royal-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .cell-gem { height: 50px; background: radial-gradient(circle, var(--cyber-cyan), #02040a); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid rgba(0,243,255,0.5); cursor: pointer; }
-
-        .royal-container { background: rgba(20, 6, 25, 0.95); padding: 24px 18px; border-radius: 20px; border: 2px solid var(--cyber-purple); width: 100%; max-width: 350px; margin: auto; text-align: center; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 0 35px var(--cyber-purple); }
-        .cell-royal { height: 50px; background: radial-gradient(circle, var(--cyber-purple), #0a0015); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; border: 1px solid rgba(128,0,255,0.5); cursor: pointer; }
-
-        .mine-container { background: rgba(6, 11, 25, 0.95); padding: 24px; border-radius: 20px; text-align: center; max-width: 400px; width: 100%; border: 2px solid var(--cyber-cyan); margin: auto; box-shadow: var(--glow-effect); }
-        .mine-mode-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
-        .mine-mode-btn { background: rgba(10,16,30,0.8); color: var(--cyber-cyan); border: 1px solid var(--cyber-cyan); padding: 12px 20px; font-size: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; }
-        .mine-header-info { display: flex; justify-content: space-between; background: rgba(10,16,30,0.8); color: var(--cyber-cyan); padding: 10px 14px; border-radius: 8px; font-weight: bold; margin-bottom: 15px; font-size: 13px; border: 1px solid var(--cyber-cyan); }
-        .ladder { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .row-level { display: flex; gap: 8px; justify-content: center; }
-        .mine-box { background: rgba(10, 16, 30, 0.8); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; height: 46px; flex: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; font-weight: bold; cursor: pointer; }
-        .mine-box.active { border-color: var(--cyber-cyan); color: #fff; background: rgba(0, 243, 255, 0.15); }
-        .mine-btn { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-green)); color: #02040a; border: none; padding: 14px 20px; font-size: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; }
-
-        .controls { padding: 14px 20px; background: rgba(6, 11, 25, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 12px; flex-shrink: 0; }
-        .btn-3d { padding: 12px; border-radius: 10px; border: none; font-weight: 800; cursor: pointer; color: #fff; width: 100%; box-shadow: 0 0 20px rgba(0,243,255,0.4); background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-purple)); font-size: 0.95rem; }
-
-        .id-manage-table { width: 100%; margin-top: 5px; border-collapse: collapse; font-size: 0.75rem; text-align: right; }
-        .id-manage-table th, .id-manage-table td { padding: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ddd; }
-        .id-manage-table th { background: rgba(10,16,30,0.9); color: var(--cyber-cyan); }
-        .action-icon-btn { background: none; border: none; cursor: pointer; font-size: 0.9rem; padding: 2px 4px; }
-
-        #ai-sim-overlay { position: fixed; inset: 0; background: rgba(2,4,10,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; flex-direction: column; }
-        .ai-sim-box { background: rgba(6, 11, 25, 0.95); border: 2px solid var(--cyber-cyan); padding: 30px 25px; border-radius: 20px; width: 85%; max-width: 330px; text-align: center; box-shadow: var(--glow-effect); }
-
-        .timer-hud {
-            font-size: 0.85rem;
-            color: var(--cyber-cyan);
-            background: rgba(0,243,255,0.1);
-            border: 1px solid var(--cyber-cyan);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-family: monospace;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+        .grid-5x5 {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+            width: 100%; max-width: 340px; margin: auto; padding: 12px;
+            background: rgba(10, 15, 30, 0.95); border: 2px solid var(--neon-blue);
+            border-radius: 16px;
         }
+        .grid-cell {
+            height: 48px; background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer;
+        }
+
+        .apple-board { flex: 1; display: flex; flex-direction: column-reverse; gap: 6px; padding: 10px; overflow-y: auto; align-items: center; }
+        .apple-row { display: flex; gap: 6px; align-items: center; width: 100%; max-width: 330px; opacity: 0.35; pointer-events: none; }
+        .apple-row.active { opacity: 1; pointer-events: auto; }
+        .apple-cell {
+            flex: 1; height: 38px; background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        }
+        .apple-cell.revealed-apple { background: rgba(0,255,102,0.2); border-color: var(--neon-green); }
+        .apple-cell.revealed-bomb { background: rgba(255,0,85,0.2); border-color: var(--neon-pink); }
+        .reveal-btn {
+            padding: 6px 10px; border-radius: 6px; border: none;
+            background: linear-gradient(90deg, var(--neon-blue), #0066ff);
+            color: #fff; font-weight: bold; font-size: 0.75rem; cursor: pointer;
+        }
+
+        .mine-container { background: rgba(10, 15, 30, 0.95); padding: 18px; border-radius: 16px; text-align: center; max-width: 350px; width: 90%; border: 2px solid var(--neon-blue); margin: auto; }
+        .mine-mode-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+        .mine-mode-btn { background: rgba(15,23,42,0.9); color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 8px 15px; font-size: 14px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; }
+        .mine-header-info { display: flex; justify-content: space-between; background: rgba(15,23,42,0.9); color: var(--neon-blue); padding: 8px 12px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; font-size: 12px; border: 1px solid var(--neon-blue); }
+        .ladder { display: flex; flex-direction: column-reverse; gap: 6px; margin-bottom: 10px; }
+        .row-level { display: flex; gap: 6px; justify-content: center; opacity: 0.35; pointer-events: none; }
+        .row-level.active { opacity: 1; pointer-events: auto; }
+        .mine-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; height: 38px; flex: 1; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; font-weight: bold; cursor: pointer; }
+        .mine-box.active-box { border-color: var(--neon-blue); color: #fff; background: rgba(0, 240, 255, 0.15); }
+
+        .admin-panel {
+            width: 88%; max-width: 400px; background: rgba(10, 15, 30, 0.98);
+            border: 2px solid var(--neon-green); border-radius: 16px; padding: 18px;
+            max-height: 85vh; overflow-y: auto;
+        }
+        .id-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.78rem; }
+        .id-table th, .id-table td { padding: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
     </style>
 </head>
 <body>
 
-<canvas id="matrix-canvas"></canvas>
+<div class="fast-cyber-bg"></div>
 
 <div class="cyber-ticker">
-    <span>⚡ [ CYBER-TERMINAL VVIP ONLINE ] &nbsp;&bull;&nbsp; [ SERVER PING: <span id="ping-hud">12</span>ms ] &nbsp;&bull;&nbsp; [ MATRIX ALGORITHM: ACTIVE 🟢 ]</span>
+    <span>⚡ [ CYBER MATRIX VIP SYSTEM ONLINE ] &nbsp;&bull;&nbsp; [ SERVER PING: <span id="ping-hud">12</span>ms ] &nbsp;&bull;&nbsp; [ التشفير الكوني نشط 🟢 ]</span>
 </div>
 
-<div id="ai-sim-overlay">
-    <div class="ai-sim-box">
-        <div class="holo-scanner">
-            <div class="holo-scanner-inner"></div>
-        </div>
-        <div id="ai-sim-text" style="font-size: 0.95rem; font-weight: bold; color: var(--cyber-cyan); margin-bottom: 15px; min-height: 35px;">جاري كسر شفرة الخلية...</div>
-        <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.8); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
-            <div id="ai-sim-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-green)); transition: width 0.3s;"></div>
-        </div>
-    </div>
-</div>
-
-<!-- شاشة الدخول الأولى -->
-<div id="pass-screen" class="overlay">
-    <div class="login-card-bg">
-        <h2>CYBER VIP ACCESS 🔐</h2>
-        <div class="confidence-badge" style="margin-bottom: 12px;">⚡ أدخل الـ ID الخاص بك للتحقق</div>
-        <input type="password" id="pass-input" placeholder="أدخل كود الاشتراك..." autocomplete="off" autocapitalize="off" spellcheck="false">
-        <button class="btn-3d" style="margin-top: 10px;" onclick="playSynthSound('click'); hapticFeedback(); checkMainLogin()">دخول للنظام 🚀</button>
-        <div class="version-tag">MATRIX VIP SYSTEM v12.0</div>
+<!-- شاشة تسجيل الدخول -->
+<div id="screen-login" class="app-overlay">
+    <div class="login-card">
+        <h2>CYBER ACCESS 🔐</h2>
+        <p style="font-size: 0.78rem; color: var(--neon-blue); margin-bottom: 12px;">أدخل كود الاشتراك أو الـ ID لتأكيد الصلاحية</p>
+        <input type="password" id="pass-input" placeholder="أدخل الـ ID هنا..." autocomplete="off">
+        <button class="cyber-btn" onclick="checkLogin()">دخول النظام VIP 🚀</button>
     </div>
 </div>
 
 <!-- لوحة التحكم للمالك -->
-<div id="roma-panel" class="overlay" style="display:none">
-    <div class="login-box">
-        <h2 style="color: var(--cyber-green); font-size: 1.1rem; margin-bottom: 10px;">لوحة التحكم والاشتراكات ⚙️</h2>
-        
-        <div style="background: rgba(0,243,255,0.05); border: 1px solid var(--cyber-cyan); border-radius: 12px; padding: 12px; margin-bottom: 10px; text-align: right;">
-            <div style="font-size: 0.8rem; color: var(--cyber-cyan); font-weight: bold; margin-bottom: 6px;">1️⃣ رابط مؤقت آمن (ساعة صلاحية)</div>
-            <button class="btn-3d" style="padding: 8px; font-size: 0.8rem;" onclick="playSynthSound('success'); hapticFeedback(); generateTimedSessionLink()">نسخ الرابط المؤقت 🔗</button>
-            <div id="timed-link-box" style="font-size: 0.68rem; color: #aaa; margin-top: 4px; word-break: break-all;"></div>
+<div id="screen-admin" class="app-overlay" style="display: none;">
+    <div class="admin-panel">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 12px; font-size: 1.1rem;">لوحة التحكم والاشتراكات ⚙️</h3>
+        <div style="background: rgba(0,240,255,0.05); padding: 8px; border-radius: 8px; border: 1px solid var(--neon-blue); margin-bottom: 8px;">
+            <p style="font-size: 0.75rem; color: var(--neon-blue);">تفعيل ID جديد للعميل:</p>
+            <input type="text" id="new-client-id" placeholder="رقم الـ ID" style="padding: 6px; margin: 4px 0; font-size:0.85rem;">
+            <select id="new-client-attempts" style="width: 100%; padding: 6px; border-radius: 6px; background: #000; color: #fff; border: 1px solid var(--neon-blue); margin-bottom: 4px; font-size:0.82rem;">
+                <option value="1">1 محاولة</option>
+                <option value="3" selected>3 محاولات</option>
+                <option value="5">5 محاولات</option>
+            </select>
+            <button class="cyber-btn" onclick="addClientId()" style="padding: 6px; font-size:0.82rem;">حفظ وتفعيل الـ ID ⚡</button>
         </div>
-
-        <div style="background: rgba(0,255,102,0.05); border: 1px solid var(--cyber-green); border-radius: 12px; padding: 12px; margin-bottom: 10px; text-align: right;">
-            <div style="font-size: 0.8rem; color: var(--cyber-green); font-weight: bold; margin-bottom: 6px;">2️⃣ رابط المباشر لـ ID العميل</div>
-            <input type="text" id="client-id-for-link" placeholder="أدخل رقم الـ ID للعميل" style="font-size: 0.8rem; padding: 8px;">
-            <button class="btn-3d" style="background: var(--cyber-green); color: #000; padding: 8px; font-size: 0.8rem; margin-top: 4px;" onclick="playSynthSound('success'); hapticFeedback(); generateClientPresetLink()">نسخ رابط الـ ID المباشر 📋</button>
-            <div id="preset-link-box" style="font-size: 0.68rem; color: #aaa; margin-top: 4px; word-break: break-all;"></div>
+        <div style="max-height: 110px; overflow-y: auto;">
+            <table class="id-table">
+                <thead><tr><th>الـ ID</th><th>المحاولات</th><th>إجراء</th></tr></thead>
+                <tbody id="ids-table-body"></tbody>
+            </table>
         </div>
-
-        <div style="background: rgba(255,0,85,0.05); border: 1px solid var(--cyber-magenta); border-radius: 12px; padding: 12px; text-align: right;">
-            <div style="font-size: 0.8rem; color: var(--cyber-magenta); font-weight: bold; margin-bottom: 6px;">3️⃣ إضافة وتفعيل الـ ID يدوياً</div>
-            <input type="text" id="new-id-input" placeholder="رقم الـ ID الشخصي" style="font-size: 0.8rem; padding: 8px;">
-            <div style="display: flex; gap: 6px; margin-top: 3px; align-items: center;">
-                <span style="font-size: 0.75rem; color: #aaa;">المحاولات:</span>
-                <select id="new-id-attempts" style="margin: 0; padding: 6px; font-size: 0.8rem;">
-                    <option value="1">1 محاولة</option>
-                    <option value="3" selected>3 محاولات</option>
-                    <option value="5">5 محاولات</option>
-                </select>
-            </div>
-            <button class="btn-3d" style="background: var(--cyber-magenta); color: #fff; padding: 8px; font-size: 0.8rem; margin-top: 6px;" onclick="playSynthSound('success'); hapticFeedback(); saveClientMapping()">تفعيل الـ ID الآن ⚡</button>
-            
-            <div style="max-height: 80px; overflow-y: auto; margin-top: 8px;">
-                <table class="id-manage-table" id="roma-ids-table">
-                    <thead>
-                        <tr>
-                            <th>الـ ID</th>
-                            <th>المحاولات</th>
-                            <th>حذف</th>
-                        </tr>
-                    </thead>
-                    <tbody id="roma-ids-tbody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <button class="btn-3d" style="background:#333; color:white; margin-top: 12px; padding: 8px;" onclick="playSynthSound('click'); hapticFeedback(); closeRomaPanel()">خروج ❌</button>
+        <button class="cyber-btn" style="background: #333; margin-top: 10px; padding: 6px; font-size:0.82rem;" onclick="showScreen('screen-login')">إغلاق اللوحة ❌</button>
     </div>
 </div>
 
-<div id="loading-screen" class="overlay" style="display:none">
-    <div class="holo-scanner">
-        <div class="holo-scanner-inner"></div>
+<!-- قائمة الألعاب السريعة الخفيفة -->
+<div id="screen-lobby" class="app-overlay" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 88%; max-width: 600px; margin-top: 20px;">
+        <h2 style="font-size: 1.2rem; color: #fff;">اختر اللعبة 🎮</h2>
+        <div id="global-attempts-hud" class="attempts-hud">🎮 المحاولات: 3</div>
     </div>
-    <div id="portal-loading-text" style="font-size: 1.1rem; color: var(--cyber-cyan); font-weight: bold;">جاري ربط شفرة التشفير...</div>
-</div>
-
-<div id="game-loading-screen" class="overlay" style="display:none">
-    <div class="holo-scanner">
-        <div class="holo-scanner-inner"></div>
+    <div class="carousel-container">
+        <div class="carousel-wheel" id="carousel-wheel"></div>
     </div>
-    <div id="game-portal-text" style="font-size: 1.1rem; color: var(--cyber-green); font-weight: bold;">جاري حقن خوارزمية اللعبة...</div>
-</div>
-
-<div id="lobby-screen" class="overlay" style="display:none">
-    <div class="lobby-wrapper">
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 5px;">
-            <h2 style="font-size: 1.4rem; color: #fff; text-shadow: 0 0 10px var(--cyber-cyan);">اختر اللعبة 🎮</h2>
-            <div id="attempts-hud" class="timer-hud">🎮 3</div>
-        </div>
-
-        <div class="games-row-top">
-            <div class="game-card" onclick="playSynthSound('click'); hapticFeedback(); openGame('crash')">
-                <span class="game-icon">✈️</span>
-                <span class="game-name">Crash</span>
-            </div>
-            <div class="game-card" onclick="playSynthSound('click'); hapticFeedback(); openGame('apple')">
-                <span class="game-icon">🍎</span>
-                <span class="game-name">Apple</span>
-            </div>
-            <div class="game-card" onclick="playSynthSound('click'); hapticFeedback(); openGame('gems')">
-                <span class="game-icon">💎</span>
-                <span class="game-name">Gems</span>
-            </div>
-        </div>
-
-        <div class="games-row-bottom">
-            <div class="game-card" onclick="playSynthSound('click'); hapticFeedback(); openGame('royal')">
-                <span class="game-icon">🍗</span>
-                <span class="game-name">Royal Feast</span>
-            </div>
-            <div class="game-card" onclick="playSynthSound('click'); hapticFeedback(); openGame('goldmine')">
-                <span class="game-icon">⛏️</span>
-                <span class="game-name">Wild West</span>
-            </div>
-        </div>
-
-        <div class="version-tag" style="position: relative; margin-top: 10px;">CYBER MATRIX LOBBY v12.0</div>
+    <div class="carousel-controls">
+        <button class="nav-btn" onclick="rotateCarousel(-1)">❮</button>
+        <button class="cyber-btn" style="width: 140px; padding:10px;" onclick="launchSelectedGame()">تشغيل اللعبة 🚀</button>
+        <button class="nav-btn" onclick="rotateCarousel(1)">❯</button>
     </div>
 </div>
 
-<div id="main-container" style="display:none; flex-direction:column; height:100%">
-    
-    <div id="game-apple" class="game-section" style="display:none; flex-direction:column; height:100%;">
-        <div class="header">
-            <button class="back-btn" onclick="playSynthSound('click'); hapticFeedback(); returnToLobby()">⬅ القائمة</button>
-            <span>Apple 🍎</span>
-            <div id="game-attempts-hud-apple" class="timer-hud">🎮 3</div>
-        </div>
-        <div id="game-board-apple"></div>
-        <div class="controls">
-            <button class="btn-3d" onclick="playSynthSound('click'); hapticFeedback(); resetGameSession('apple')">إعادة تهيئة (Reset) 🔄</button>
-        </div>
+<!-- شاشة الرادار السريعة -->
+<div id="screen-radar" class="app-overlay" style="display: none;">
+    <div class="radar-box"></div>
+    <div id="radar-status-text" style="font-size: 0.95rem; color: var(--neon-blue); font-weight: bold;">جاري سحب بيانات السيرفر...</div>
+</div>
+
+<!-- واجهات الألعاب المباشرة -->
+<div id="screen-game-container" class="game-screen" style="display: none;">
+    <div class="game-header">
+        <button class="back-btn" onclick="showScreen('screen-lobby')">⬅ القائمة</button>
+        <span id="active-game-title" style="font-weight: bold; color: var(--neon-blue); font-size:0.95rem;">لعبة Apple</span>
+        <div id="game-attempts-hud" class="attempts-hud">🎮 3</div>
     </div>
-
-    <div id="game-gems" class="game-section" style="display:none; flex-direction:column; height:100%;">
-        <div class="header">
-            <button class="back-btn" onclick="playSynthSound('click'); hapticFeedback(); returnToLobby()">⬅ القائمة</button>
-            <span>Gems & Mines 💎</span>
-            <div id="game-attempts-hud-gems" class="timer-hud">🎮 3</div>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center; padding: 10px;">
-            <div class="gems-container">
-                <div style="font-size: 16px; color: var(--cyber-cyan); font-weight:bold;">RADAR GEMS MATRIX</div>
-                <div id="game-board-gems" class="royal-grid"></div>
-                <div style="font-size: 13px; color: #aaa;">اضغط على الخلية للتحليل الفوري!</div>
-                <button class="btn-3d" style="background:transparent; color:var(--cyber-cyan); border:1px solid var(--cyber-cyan); padding: 10px;" onclick="playSynthSound('click'); hapticFeedback(); resetGameSession('gems')">إعادة تهيئة (Reset) 🔄</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="game-royal" class="game-section" style="display:none; flex-direction:column; height:100%;">
-        <div class="header">
-            <button class="back-btn" onclick="playSynthSound('click'); hapticFeedback(); returnToLobby()">⬅ القائمة</button>
-            <span>Royal Feast 🍗</span>
-            <div id="game-attempts-hud-royal" class="timer-hud">🎮 3</div>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center; background:rgba(20,5,25,0.6); padding: 10px;">
-            <div class="royal-container">
-                <div style="font-size: 16px; color: var(--cyber-purple); font-weight: bold;">ROYAL FEAST RADAR</div>
-                <div id="game-board-royal" class="royal-grid"></div>
-                <div style="font-size: 13px; color: #aaa;">اضغط لكشف أماكن الطعام والسم!</div>
-                <button class="btn-3d" style="padding: 10px;" onclick="playSynthSound('click'); hapticFeedback(); resetGameSession('royal')">إعادة تهيئة (Reset) 🔄</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="game-goldmine" class="game-section" style="display:none; flex-direction:column; height:100%;">
-        <div class="header">
-            <button class="back-btn" onclick="playSynthSound('click'); hapticFeedback(); returnToLobby()">⬅ القائمة</button>
-            <span>Wild West Gold ⛏</span>
-            <div id="game-attempts-hud-gold" class="timer-hud">🎮 3</div>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center; background:rgba(15,5,20,0.6); padding: 10px;">
-            <div class="mine-container">
-                <div id="mineMainMenu">
-                    <h1 style="color: var(--cyber-cyan); margin-bottom: 12px; font-size: 18px;">🛡️ Wild West Gold 🔓</h1>
-                    <p style="color: #aaa; margin-bottom: 12px; font-size: 13px;">اختر النظام المفضل للبدء:</p>
-                    <div class="mine-mode-buttons">
-                        <button class="mine-mode-btn" onclick="playSynthSound('click'); hapticFeedback(); initMineGameSession(2)">وضع 2x</button>
-                        <button class="mine-mode-btn" onclick="playSynthSound('click'); hapticFeedback(); initMineGameSession(3)">وضع 3x</button>
-                    </div>
-                </div>
-
-                <div id="mineGameArea" style="display:none;">
-                    <div class="mine-header-info">
-                        <div>الحالة: <span style="color: var(--cyber-green);">متصل 🟢</span></div>
-                        <div>الخطوة: <span id="currentStepText">1</span> / 6</div>
-                    </div>
-
-                    <div class="ladder" id="ladderContainer"></div>
-
-                    <div id="mineMessage" style="font-size: 14px; font-weight: bold; margin: 10px 0; min-height: 25px; color: var(--cyber-cyan);">ابدأ من الأسفل للصعود للقمة!</div>
-
-                    <button id="nextSignalBtn" class="mine-btn" onclick="playSynthSound('click'); hapticFeedback(); resetMineVariables()" style="margin-bottom: 8px; display:none;">إشارة جديدة 🔄</button>
-                    <button class="mine-btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" onclick="playSynthSound('click'); hapticFeedback(); resetToMineMenu()">القائمة الرئيسية</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div id="game-board-area" style="flex: 1; display: flex; align-items: center; justify-content: center;"></div>
 </div>
 
 <script>
-    let audioCtx = null;
-    function initAudio() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // --- 1. Security & Local DB ---
+    const MASTER_KEY = "VIP_CYBER_MASTER_DB";
+    function getDB() {
+        let db = localStorage.getItem(MASTER_KEY);
+        if(!db) { let def = { ids: {} }; localStorage.setItem(MASTER_KEY, JSON.stringify(def)); return def; }
+        return JSON.parse(db);
     }
-    function playSynthSound(type) {
-        try {
-            initAudio();
-            if (!audioCtx) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            let now = audioCtx.currentTime;
-            if (type === 'click') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(500, now);
-                osc.frequency.exponentialRampToValueAtTime(1000, now + 0.08);
-                gain.gain.setValueAtTime(0.12, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-                osc.start(now);
-                osc.stop(now + 0.08);
-            } else if (type === 'success') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.setValueAtTime(659.25, now + 0.1);
-                osc.frequency.setValueAtTime(783.99, now + 0.2);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                osc.start(now);
-                osc.stop(now + 0.35);
+    function saveDB(data) { localStorage.setItem(MASTER_KEY, JSON.stringify(data)); }
+    let activeClientId = null;
+
+    function checkLogin() {
+        let val = document.getElementById('pass-input').value.trim();
+        if(!val) return alert("يرجى إدخال رقم الـ ID الخاص بك!");
+        if(val === "Walhyma3rf") { renderAdminTable(); showScreen('screen-admin'); return; }
+        let db = getDB();
+        if(db.ids[val]) {
+            if(db.ids[val].attempts <= 0) {
+                return alert("عذراً! انتهت جميع المحاولات الخاصة بهذا الـ ID. يرجى التواصل مع المالك.");
             }
-        } catch(e) {}
-    }
-
-    function hapticFeedback() {
-        if (navigator.vibrate) navigator.vibrate(35);
-    }
-
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null, radius: 120 };
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
-    });
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.8;
-            this.vy = (Math.random() - 0.5) * 0.8;
-            this.size = Math.random() * 2 + 1;
-        }
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            if (mouse.x !== null && mouse.y !== null) {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < mouse.radius) {
-                    let angle = Math.atan2(dy, dx);
-                    this.x -= Math.cos(angle) * 1.5;
-                    this.y -= Math.sin(angle) * 1.5;
-                }
-            }
-        }
-        draw() {
-            ctx.fillStyle = 'rgba(0, 243, 255, 0.4)';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function initParticles() {
-        particles = [];
-        let count = Math.floor((canvas.width * canvas.height) / 12000);
-        for (let i = 0; i < count; i++) particles.push(new Particle());
-    }
-    initParticles();
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-            for (let j = i + 1; j < particles.length; j++) {
-                let dx = particles[i].x - particles[j].x;
-                let dy = particles[i].y - particles[j].y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 90) {
-                    ctx.strokeStyle = `rgba(0, 243, 255, ${0.12 * (1 - dist / 90)})`;
-                    ctx.lineWidth = 0.6;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-
-    window.addEventListener('DOMContentLoaded', () => {
-        checkURLParams();
-        renderRomaIDsTable();
-        setInterval(() => {
-            let pingEl = document.getElementById('ping-hud');
-            if (pingEl) pingEl.innerText = Math.floor(10 + Math.random() * 12);
-        }, 4000);
-    });
-
-    const GLOBAL_MASTER_KEY = "vip_3d_portal_database_v6";
-
-    function getGlobalDB() {
-        let defaultData = { ids: {} };
-        let stored = localStorage.getItem(GLOBAL_MASTER_KEY);
-        if (!stored) {
-            localStorage.setItem(GLOBAL_MASTER_KEY, JSON.stringify(defaultData));
-            return defaultData;
-        }
-        try {
-            let parsed = JSON.parse(stored);
-            if (!parsed.ids) parsed.ids = {};
-            return parsed;
-        } catch(e) {
-            return defaultData;
-        }
-    }
-
-    function saveGlobalDB(db) {
-        localStorage.setItem(GLOBAL_MASTER_KEY, JSON.stringify(db));
-    }
-
-    let activeClientKey = null;
-    let currentActiveGame = null;
-
-    function checkURLParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const secToken = urlParams.get('sec');
-        const targetID = urlParams.get('id');
-
-        if (secToken) {
-            try {
-                let decodedData = JSON.parse(atob(secToken));
-                let now = Date.now();
-                if (now < decodedData.exp) {
-                    document.getElementById('pass-screen').style.display = 'none';
-                    let clientIdInputPrompt = prompt("رابط مؤقت آمن. أدخل الـ ID الخاص بك للتحقق:");
-                    if(clientIdInputPrompt) {
-                        let db = getGlobalDB();
-                        let cleanID = clientIdInputPrompt.trim();
-                        if(db.ids[cleanID]) {
-                            activeClientKey = cleanID;
-                            updateAttemptsHUD();
-                            startServerConnection();
-                        } else {
-                            alert("خطأ: هذا الـ ID غير مفعل بواسطة المالك!");
-                            document.getElementById('pass-screen').style.display = 'flex';
-                        }
-                    } else {
-                        document.getElementById('pass-screen').style.display = 'flex';
-                    }
-                    return; 
-                } else {
-                    alert("عذراً، انتهت صلاحية الرابط المؤقت!");
-                }
-            } catch(e) {
-                alert("رابط غير صالح!");
-            }
-        }
-
-        if (targetID) {
-            let db = getGlobalDB();
-            let cleanTargetID = targetID.trim();
-            if (db.ids[cleanTargetID]) {
-                activeClientKey = cleanTargetID;
-                document.getElementById('pass-screen').style.display = 'none';
-                updateAttemptsHUD();
-                startServerConnection();
-            } else {
-                alert("خطأ: الـ ID غير مفعل في قاعدة البيانات!");
-            }
-        }
-    }
-
-    function generateTimedSessionLink() {
-        let expiryTime = Date.now() + (60 * 60 * 1000);
-        let rawPayload = JSON.stringify({ type: 'timed_session', exp: expiryTime, salt: Math.random() });
-        let encryptedToken = btoa(rawPayload);
-        
-        let currentUrl = window.location.href.split('?')[0];
-        let link = `${currentUrl}?sec=${encryptedToken}`;
-        
-        document.getElementById('timed-link-box').innerText = link;
-        navigator.clipboard.writeText(link);
-        alert("تم نسخ الرابط المؤقت بنجاح! 📋");
-    }
-
-    function generateClientPresetLink() {
-        let idVal = document.getElementById('client-id-for-link').value.trim();
-        if (!idVal) {
-            alert("يرجى إدخال رقم الـ ID أولاً!");
-            return;
-        }
-        let db = getGlobalDB();
-        if (!db.ids[idVal]) {
-            alert("تنبيه: هذا الـ ID غير مسجل، يجب حفظه أولاً في قاعدة البيانات!");
-            return;
-        }
-        let currentUrl = window.location.href.split('?')[0];
-        let link = `${currentUrl}?id=${encodeURIComponent(idVal)}`;
-        document.getElementById('preset-link-box').innerText = link;
-        navigator.clipboard.writeText(link);
-        alert("تم نسخ رابط الـ ID المباشر بنجاح! 📋");
-    }
-
-    function saveClientMapping() {
-        let idVal = document.getElementById('new-id-input').value.trim();
-        let attVal = parseInt(document.getElementById('new-id-attempts').value);
-        if (idVal.length >= 1) {
-            let db = getGlobalDB();
-            db.ids[idVal] = { attempts: attVal };
-            saveGlobalDB(db);
-            document.getElementById('new-id-input').value = '';
-            renderRomaIDsTable();
-            alert(`تم تفعيل الـ ID (${idVal}) بـ ${attVal} محاولات بنجاح! ✅`);
-        } else {
-            alert("يرجى إدخال ID صحيح!");
-        }
-    }
-
-    function renderRomaIDsTable() {
-        let tbody = document.getElementById('roma-ids-tbody');
-        tbody.innerHTML = '';
-        let db = getGlobalDB();
-        let keys = Object.keys(db.ids);
-
-        if (keys.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#777;">لا توجد IDs مفعلة.</td></tr>`;
-            return;
-        }
-
-        keys.forEach(idKey => {
-            let attemptsCount = db.ids[idKey].attempts !== undefined ? db.ids[idKey].attempts : 3;
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-family:monospace; font-weight:bold; color:var(--cyber-cyan);">${idKey}</td>
-                <td><span style="font-size:0.7rem; color:var(--cyber-green);">${attemptsCount} محاولات</span></td>
-                <td><button class="action-icon-btn" onclick="deleteSingleID('${idKey}')">❌</button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function deleteSingleID(idKey) {
-        let db = getGlobalDB();
-        delete db.ids[idKey];
-        saveGlobalDB(db);
-        renderRomaIDsTable();
-    }
-
-    function closeRomaPanel() {
-        document.getElementById('roma-panel').style.display = 'none';
-        document.getElementById('pass-screen').style.display = 'flex';
-    }
-
-    // الأمان الصارم المعتمد
-    function checkMainLogin() {
-        let inputVal = document.getElementById('pass-input').value.trim();
-        if (!inputVal) {
-            alert("يرجى إدخال الكود أو الـ ID لتسجيل الدخول!");
-            return;
-        }
-
-        let db = getGlobalDB();
-
-        // دخول المالك
-        if (inputVal === "Walhyma3rf") {
-            document.getElementById('pass-screen').style.display = 'none';
-            document.getElementById('roma-panel').style.display = 'flex';
-            renderRomaIDsTable();
-            document.getElementById('pass-input').value = '';
-            return;
-        }
-
-        // فحص الـ ID المسجل فقط
-        let foundKey = Object.keys(db.ids).find(k => k.trim() === inputVal);
-        if (foundKey) {
-            activeClientKey = foundKey;
+            activeClientId = val;
             updateAttemptsHUD();
-            document.getElementById('pass-screen').style.display = 'none';
-            startServerConnection();
+            triggerRadarLoading(() => { showScreen('screen-lobby'); });
         } else {
-            alert("خطأ: هذا الـ ID غير مفعل! يرجى التواصل مع المالك لتفعيل حسابك أولاً.");
-            document.getElementById('pass-input').value = '';
+            alert("خطأ: هذا الـ ID غير مفعل! يرجى التواصل مع المالك للتفعيل.");
         }
     }
 
-    function updateAttemptsHUD() {
-        let db = getGlobalDB();
-        let attempts = 3;
-        if (activeClientKey && db.ids[activeClientKey]) {
-            attempts = db.ids[activeClientKey].attempts;
-        }
-        ['attempts-hud', 'game-attempts-hud-apple', 'game-attempts-hud-gems', 'game-attempts-hud-royal', 'game-attempts-hud-gold'].forEach(id => {
-            let el = document.getElementById(id);
-            if (el) el.innerText = `🎮 ${attempts}`;
-        });
-    }
-
-    function consumeAttemptForGame(gameName) {
-        if (!activeClientKey) return true;
-        if (currentActiveGame === gameName) return true;
-
-        let db = getGlobalDB();
-        if (db.ids[activeClientKey]) {
-            if (db.ids[activeClientKey].attempts > 0) {
-                db.ids[activeClientKey].attempts -= 1;
-                saveGlobalDB(db);
+    function deductAttempt() {
+        if (!activeClientId) return true;
+        let db = getDB();
+        if (db.ids[activeClientId]) {
+            if (db.ids[activeClientId].attempts > 0) {
+                db.ids[activeClientId].attempts -= 1;
+                saveDB(db);
                 updateAttemptsHUD();
-                currentActiveGame = gameName;
                 return true;
             } else {
-                alert("لقد استنفدت عدد المحاولات المتاحة لهذا الـ ID (0 محاولات متبقية)!");
+                alert("استنفدت عدد المحاولات المتاحة لهذا الـ ID (0 محاولة)! يرجى التواصل مع المالك.");
+                showScreen('screen-lobby');
                 return false;
             }
         }
         return true;
     }
 
-    function startServerConnection() {
-        const loadScreen = document.getElementById('loading-screen');
-        const portalMsg = document.getElementById('portal-loading-text');
-        loadScreen.style.display = 'flex';
+    function addClientId() {
+        let idVal = document.getElementById('new-client-id').value.trim();
+        let attemptsVal = parseInt(document.getElementById('new-client-attempts').value);
+        if(!idVal) return alert("أدخل رقم ID صحيح!");
+        let db = getDB();
+        db.ids[idVal] = { attempts: attemptsVal };
+        saveDB(db);
+        document.getElementById('new-client-id').value = "";
+        renderAdminTable();
+        alert(`تم تفعيل الـ ID (${idVal}) بـ ${attemptsVal} محاولات بنجاح!`);
+    }
 
-        let portalSteps = [
-            "جاري كسر حماية الخلية...",
-            "مطابقة التردد مع خادم VIP...",
-            "تأكيد صلاحيات الحساب...",
-            "تم الاتصال بنجاح!"
-        ];
+    function renderAdminTable() {
+        let db = getDB();
+        let tbody = document.getElementById('ids-table-body');
+        tbody.innerHTML = "";
+        Object.keys(db.ids).forEach(id => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<td>${id}</td><td>${db.ids[id].attempts}</td><td><button onclick="deleteId('${id}')" style="background:none; border:none; color:red; cursor:pointer;">❌</button></td>`;
+            tbody.appendChild(tr);
+        });
+    }
 
+    function deleteId(id) {
+        let db = getDB();
+        delete db.ids[id];
+        saveDB(db);
+        renderAdminTable();
+    }
+
+    function updateAttemptsHUD() {
+        let db = getDB();
+        let att = 3;
+        if(activeClientId && db.ids[activeClientId]) { att = db.ids[activeClientId].attempts; }
+        document.getElementById('global-attempts-hud').innerText = `🎮 المحاولات: ${att}`;
+        document.getElementById('game-attempts-hud').innerText = `🎮 ${att}`;
+    }
+
+    // --- 2. Fast Carousel (سريع ومناسب للهواتف) ---
+    const gamesList = [
+        { id: 'apple', title: 'Apple 🍎', icon: '🍎' },
+        { id: 'gems', title: 'Gems & Mines 💎', icon: '💎' },
+        { id: 'royal', title: 'Royal Feast 🍗', icon: '🍗' },
+        { id: 'goldmine', title: 'Wild West Gold ⛏️', icon: '⛏️' },
+        { id: 'crash', title: 'Crash ✈️', icon: '✈️' }
+    ];
+    let currentCardIndex = 0;
+    const wheel = document.getElementById('carousel-wheel');
+
+    function buildCarousel() {
+        wheel.innerHTML = "";
+        gamesList.forEach((game, index) => {
+            const card = document.createElement('div');
+            card.className = `carousel-card ${index === 0 ? 'active' : ''}`;
+            card.id = `card-${index}`;
+            card.innerHTML = `<span class="game-icon-large">${game.icon}</span><span class="game-title-large">${game.title}</span>`;
+            wheel.appendChild(card);
+        });
+    }
+    buildCarousel();
+
+    function rotateCarousel(dir) {
+        currentCardIndex = (currentCardIndex + dir + gamesList.length) % gamesList.length;
+        Array.from(wheel.children).forEach((card, idx) => {
+            if(idx === currentCardIndex) card.classList.add('active');
+            else card.classList.remove('active');
+        });
+    }
+
+    function launchSelectedGame() {
+        let currentGame = gamesList[currentCardIndex];
+        if(currentGame.id === 'crash') return alert("هذه اللعبة غير متوفرة حالياً!");
+        
+        if (!deductAttempt()) return;
+
+        triggerRadarLoading(() => {
+            document.getElementById('active-game-title').innerText = currentGame.title;
+            renderGameBoard(currentGame.id);
+            showScreen('screen-game-container');
+        });
+    }
+
+    function triggerRadarLoading(callback) {
+        showScreen('screen-radar');
+        let statusText = document.getElementById('radar-status-text');
+        let steps = ["جاري الربط مع سيرفر VIP...", "فك تشفير الخلايا...", "تأكيد الإشارات الحية...", "تم الاستخراج بنجاح!"];
         let idx = 0;
-        let pInterval = setInterval(() => {
-            idx++;
-            if (idx < portalSteps.length) portalMsg.innerText = portalSteps[idx];
-        }, 700);
-
-        setTimeout(() => {
-            clearInterval(pInterval);
-            loadScreen.style.display = 'none';
-            document.getElementById('lobby-screen').style.display = 'flex';
-        }, 2800);
-    }
-
-    function openGame(gameName) {
-        if(gameName === 'crash') {
-            alert("هذه اللعبة غير متوفرة حالياً ✈️");
-            return;
-        }
-
-        document.getElementById('lobby-screen').style.display = 'none';
-        const gameLoadScreen = document.getElementById('game-loading-screen');
-        const gamePortalMsg = document.getElementById('game-portal-text');
-        
-        gameLoadScreen.style.display = 'flex';
-        let gameTitles = { 'apple': 'Apple 🍎', 'gems': 'Gems & Mines 💎', 'royal': 'Royal Feast 🍗', 'goldmine': 'Wild West Gold ⛏️' };
-        gamePortalMsg.innerText = `جاري ربط ${gameTitles[gameName]} بالهولوغرام...`;
-
-        setTimeout(() => {
-            gameLoadScreen.style.display = 'none';
-            document.getElementById('main-container').style.display = 'flex';
-            document.querySelectorAll('.game-section').forEach(sec => sec.style.display = 'none');
-            
-            if(gameName === 'apple') {
-                document.getElementById('game-apple').style.display = 'flex';
-                startGameAppleSetup();
-            } else if(gameName === 'gems') {
-                document.getElementById('game-gems').style.display = 'flex';
-                renderGemsGridSetup();
-            } else if(gameName === 'royal') {
-                document.getElementById('game-royal').style.display = 'flex';
-                initRoyalGameSetup();
-            } else if(gameName === 'goldmine') {
-                document.getElementById('game-goldmine').style.display = 'flex';
-                document.getElementById('mineMainMenu').style.display = 'block';
-                document.getElementById('mineGameArea').style.display = 'none';
-            }
-        }, 1500);
-    }
-
-    function returnToLobby() {
-        currentActiveGame = null;
-        document.getElementById('main-container').style.display = 'none';
-        document.getElementById('lobby-screen').style.display = 'flex';
-        updateAttemptsHUD();
-    }
-
-    function resetGameSession(gameName) {
-        currentActiveGame = null;
-        if(gameName === 'apple') startGameAppleSetup();
-        else if(gameName === 'gems') renderGemsGridSetup();
-        else if(gameName === 'royal') initRoyalGameSetup();
-    }
-
-    function runAISimulation(gameName, callback) {
-        if (!consumeAttemptForGame(gameName)) return;
-        const overlay = document.getElementById('ai-sim-overlay');
-        const text = document.getElementById('ai-sim-text');
-        const bar = document.getElementById('ai-sim-bar');
-        
-        overlay.style.display = 'flex';
-        bar.style.width = '0%';
-
-        let steps = ["مسح الخلية الهولوجرامية...", "فك التشفير...", "تأكيد الإحداثيات...", "تم الاستخراج!"];
-        let p = 0;
         let interval = setInterval(() => {
-            p += 25;
-            bar.style.width = p + '%';
-            let stepIdx = Math.min(Math.floor(p / 30), steps.length - 1);
-            text.innerText = steps[stepIdx];
-
-            if (p >= 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                    if (callback) callback();
-                }, 200);
-            }
-        }, 160);
+            if(idx < steps.length) { statusText.innerText = steps[idx]; idx++; }
+            else { clearInterval(interval); if(callback) callback(); }
+        }, 400);
     }
 
-    let curAppleRow = 0;
-    let appleRowsData = [];
-
-    function startGameAppleSetup() {
-        const board = document.getElementById('game-board-apple');
-        board.innerHTML = '';
-        curAppleRow = 0;
-        appleRowsData = [];
-
-        for (let i = 0; i < 10; i++) {
-            let bombCount = i >= 9 ? 4 : (i >= 7 ? 3 : (i >= 4 ? 2 : 1));
-            let bombs = [];
-            while(bombs.length < bombCount) {
-                let r = Math.floor(Math.random() * 5);
-                if(!bombs.includes(r)) bombs.push(r);
-            }
-            appleRowsData.push(bombs);
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'row-wrapper' + (i === 0 ? ' active' : '');
-            wrapper.id = 'apple-row-' + i;
-
-            const rDiv = document.createElement('div');
-            rDiv.className = 'row-cells';
-            for (let j = 0; j < 5; j++) {
-                const b = document.createElement('div');
-                b.className = 'apple-brick';
-                b.innerText = '🔒';
-                rDiv.appendChild(b);
-            }
-            wrapper.appendChild(rDiv);
-
-            const revealContainer = document.createElement('div');
-            revealContainer.className = 'row-reveal-container';
-
-            const revealBtn = document.createElement('button');
-            revealBtn.className = 'row-reveal-btn';
-            revealBtn.innerText = `🔍 كشف الصف (${i + 1})`;
-            revealBtn.onclick = () => {
-                playSynthSound('click');
-                hapticFeedback();
-                runAISimulation('apple', () => revealAppleRow(i));
-            };
-
-            const confBadge = document.createElement('div');
-            confBadge.className = 'confidence-badge';
-            confBadge.innerText = `دقة: ${(98.8 + Math.random() * 1.1).toFixed(1)}%`;
-
-            revealContainer.appendChild(revealBtn);
-            revealContainer.appendChild(confBadge);
-            wrapper.appendChild(revealContainer);
-            board.appendChild(wrapper);
-        }
+    function showScreen(screenId) {
+        document.querySelectorAll('.app-overlay, .game-screen').forEach(s => s.style.display = 'none');
+        document.getElementById(screenId).style.display = 'flex';
     }
 
-    function revealAppleRow(rowIdx) {
-        if (rowIdx !== curAppleRow) return;
-        playSynthSound('success');
-        const wrapper = document.getElementById('apple-row-' + rowIdx);
-        const bricks = wrapper.querySelectorAll('.apple-brick');
-        wrapper.querySelector('.row-reveal-container').style.display = 'none';
+    // --- 3. Game Boards ---
+    function renderGameBoard(gameId) {
+        const area = document.getElementById('game-board-area');
+        area.innerHTML = "";
 
-        let bombs = appleRowsData[rowIdx];
-        for (let j = 0; j < 5; j++) {
-            if (bombs.includes(j)) {
-                bricks[j].innerText = '💣';
-                bricks[j].className = 'apple-brick revealed-bomb';
-            } else {
-                bricks[j].innerText = '🍎';
-                bricks[j].className = 'apple-brick revealed-apple';
-            }
-        }
+        if(gameId === 'gems') {
+            const grid = document.createElement('div');
+            grid.className = 'grid-5x5';
+            let allIndices = [];
+            for(let i=0; i<25; i++) allIndices.push(i);
+            let bombIndices = allIndices.sort(() => Math.random() - 0.5).slice(0, 2);
 
-        curAppleRow++;
-        if (curAppleRow < 10) {
-            let nextWrapper = document.getElementById('apple-row-' + curAppleRow);
-            if (nextWrapper) nextWrapper.classList.add('active');
-        } else {
-            alert("تم كشف جميع خطوات الشجرة بنجاح! 🏆");
-        }
-    }
-
-    let gemsBombPositions = [];
-    function renderGemsGridSetup() {
-        const board = document.getElementById('game-board-gems');
-        board.innerHTML = "";
-        let allIndices = [];
-        for (let idx = 0; idx < 25; idx++) allIndices.push(idx);
-        gemsBombPositions = allIndices.sort(() => Math.random() - 0.5).slice(0, 2);
-
-        for (let i = 0; i < 25; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell-gem';
-            cell.innerText = '❓';
-            cell.onclick = () => {
-                playSynthSound('click');
-                hapticFeedback();
-                runAISimulation('gems', () => {
-                    playSynthSound('success');
-                    if (gemsBombPositions.includes(i)) {
-                        cell.innerText = '💣'; cell.className = 'cell-gem revealed-gem-bomb';
+            for(let i=0; i<25; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.innerText = '❓';
+                cell.onclick = () => {
+                    if(bombIndices.includes(i)) {
+                        cell.innerText = '💣'; cell.style.borderColor = 'var(--neon-pink)';
                     } else {
-                        cell.innerText = '💎'; cell.className = 'cell-gem revealed-gem';
+                        cell.innerText = '💎'; cell.style.borderColor = 'var(--neon-green)';
                     }
-                });
-            };
-            board.appendChild(cell);
-        }
-    }
+                };
+                grid.appendChild(cell);
+            }
+            area.appendChild(grid);
+        } 
+        else if(gameId === 'apple') {
+            const board = document.createElement('div');
+            board.className = 'apple-board';
+            let activeAppleRow = 0;
 
-    let royalRowsData = [];
-    function initRoyalGameSetup() {
-        const board = document.getElementById('game-board-royal');
-        board.innerHTML = "";
-        royalRowsData = [];
-        let rowPoisonCounts = [3, 1, 2, 2, 2].sort(() => Math.random() - 0.5);
+            let rowsData = [];
+            for(let r=0; r<10; r++) {
+                let bombCount = 1;
+                if (r >= 4 && r <= 6) { bombCount = 2; }
+                else if (r >= 7 && r <= 8) { bombCount = 3; }
+                else if (r === 9) { bombCount = 4; }
 
-        for (let r = 0; r < 5; r++) {
-            let rowIndices = [0, 1, 2, 3, 4].map(col => (r * 5) + col);
-            let rowPoisons = rowIndices.sort(() => Math.random() - 0.5).slice(0, rowPoisonCounts[r]);
-            royalRowsData.push(...rowPoisons);
-        }
+                let bombs = [];
+                while(bombs.length < bombCount) {
+                    let randIdx = Math.floor(Math.random() * 5);
+                    if(!bombs.includes(randIdx)) bombs.push(randIdx);
+                }
+                rowsData.push(bombs);
+            }
 
-        for (let i = 0; i < 25; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell-royal';
-            cell.innerText = '❓';
-            cell.onclick = () => {
-                playSynthSound('click');
-                hapticFeedback();
-                runAISimulation('royal', () => {
-                    playSynthSound('success');
-                    let foods = ["🍗", "🥩", "🍰", "🍕"];
-                    if (royalRowsData.includes(i)) {
-                        cell.innerText = '☠'; cell.className = 'cell-royal revealed-poison';
+            for(let r=0; r<10; r++) {
+                const row = document.createElement('div');
+                row.className = `apple-row ${r === 0 ? 'active' : ''}`;
+                row.id = `apple-row-${r}`;
+
+                for(let c=0; c<5; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'apple-cell'; cell.innerText = '🔒';
+                    row.appendChild(cell);
+                }
+
+                const btn = document.createElement('button');
+                btn.className = 'reveal-btn';
+                btn.innerText = `كشف الصف (${r+1})`;
+                btn.onclick = () => {
+                    if (r !== activeAppleRow) return;
+                    let cells = row.querySelectorAll('.apple-cell');
+                    let bombs = rowsData[r];
+                    for(let c=0; c<5; c++) {
+                        if(bombs.includes(c)) {
+                            cells[c].innerText = '💣'; cells[c].className = 'apple-cell revealed-bomb';
+                        } else {
+                            cells[c].innerText = '🍎'; cells[c].className = 'apple-cell revealed-apple';
+                        }
+                    }
+                    btn.style.display = 'none';
+                    activeAppleRow++;
+                    if(activeAppleRow < 10) {
+                        let nextRow = document.getElementById(`apple-row-${activeAppleRow}`);
+                        if(nextRow) nextRow.classList.add('active');
                     } else {
-                        cell.innerText = foods[Math.floor(Math.random() * foods.length)];
-                        cell.className = 'cell-royal revealed-food';
+                        alert("تهانينا! تم اجتياز شجرة التفاحة بنجاح 🏆");
                     }
-                });
-            };
-            board.appendChild(cell);
+                };
+                row.appendChild(btn);
+                board.appendChild(row);
+            }
+            area.appendChild(board);
+        } 
+        else if(gameId === 'royal') {
+            const grid = document.createElement('div');
+            grid.className = 'grid-5x5';
+            
+            let poisonDistribution = [1, 2, 2, 2, 3].sort(() => Math.random() - 0.5);
+            let poisonIndices = [];
+
+            for(let r = 0; r < 5; r++) {
+                let poisonCountInRow = poisonDistribution[r];
+                let rowCols = [0, 1, 2, 3, 4].sort(() => Math.random() - 0.5);
+                let chosenCols = rowCols.slice(0, poisonCountInRow);
+                chosenCols.forEach(col => poisonIndices.push(r * 5 + col));
+            }
+
+            let foodTypes = ['🍗', '🥩', '🍰', '🍕'];
+
+            for(let i=0; i<25; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.innerText = '❓';
+                cell.onclick = () => {
+                    if(poisonIndices.includes(i)) {
+                        cell.innerText = '☠️'; cell.style.borderColor = 'var(--neon-pink)';
+                    } else {
+                        cell.innerText = foodTypes[Math.floor(Math.random() * foodTypes.length)];
+                        cell.style.borderColor = 'var(--neon-green)';
+                    }
+                };
+                grid.appendChild(cell);
+            }
+            area.appendChild(grid);
+        }
+        else if(gameId === 'goldmine') {
+            const container = document.createElement('div');
+            container.className = 'mine-container';
+            container.innerHTML = `
+                <h1 style="color: var(--neon-blue); margin-bottom: 10px; font-size: 15px;">🛡️ Wild West Gold 🔓</h1>
+                <p style="color: #aaa; margin-bottom: 10px; font-size: 11px;">اختر نظام اللعب للبدء:</p>
+                <div class="mine-mode-buttons">
+                    <button class="mine-mode-btn" onclick="initMineSession(2)">وضع 2x</button>
+                    <button class="mine-mode-btn" onclick="initMineSession(3)">وضع 3x</button>
+                </div>
+                <div id="mine-game-area" style="display:none; margin-top:12px;">
+                    <div class="mine-header-info">
+                        <div>الحالة: <span style="color: var(--neon-green);">متصل 🟢</span></div>
+                        <div>الخطوة: <span id="mine-step">1</span> / 6</div>
+                    </div>
+                    <div class="ladder" id="mine-ladder"></div>
+                    <button class="cyber-btn" style="margin-top:8px; padding:6px; font-size:0.8rem;" onclick="renderGameBoard('goldmine')">إعادة تعيين 🔄</button>
+                </div>
+            `;
+            area.appendChild(container);
         }
     }
 
-    let mineMode = 2, mineCurrentStep = 0, mineTotalSteps = 6, mineWinningPaths = [];
-    function initMineGameSession(selectedMode) {
-        mineMode = selectedMode;
-        document.getElementById('mineMainMenu').style.display = 'none';
-        document.getElementById('mineGameArea').style.display = 'block';
-        resetMineVariables();
+    let mineMode = 2, mineStep = 0, winningPaths = [];
+    function initMineSession(mode) {
+        mineMode = mode; mineStep = 0; winningPaths = [];
+        for(let i=0; i<6; i++) winningPaths.push(Math.floor(Math.random() * mode));
+        
+        document.querySelector('.mine-mode-buttons').style.display = 'none';
+        document.getElementById('mine-game-area').style.display = 'block';
+        buildLadder();
     }
 
-    function resetMineVariables() {
-        mineCurrentStep = 0;
-        mineWinningPaths = [];
-        document.getElementById('nextSignalBtn').style.display = 'none';
-        document.getElementById('mineMessage').innerText = "السكريبت جاهز.. ابدأ من الأسفل للصعود أعلى!";
-        for (let i = 0; i < mineTotalSteps; i++) mineWinningPaths.push(Math.floor(Math.random() * mineMode));
-        buildMineLadder();
-    }
-
-    function buildMineLadder() {
-        const ladder = document.getElementById('ladderContainer');
+    function buildLadder() {
+        const ladder = document.getElementById('mine-ladder');
         ladder.innerHTML = "";
-        for (let i = mineTotalSteps - 1; i >= 0; i--) {
+        for(let i=0; i<6; i++) {
             const row = document.createElement('div');
-            row.className = 'row-level';
-            row.id = `row-${i}`;
-            for (let j = 0; j < mineMode; j++) {
+            row.className = `row-level ${i === mineStep ? 'active' : ''}`;
+            row.id = `mine-row-${i}`;
+
+            for(let j=0; j<mineMode; j++) {
                 const box = document.createElement('div');
-                box.className = `mine-box ${i === mineCurrentStep ? 'active' : ''}`;
-                box.innerText = i === mineCurrentStep ? "🔍 اكشف" : "🔒 مغلق";
+                box.className = `mine-box ${i === mineStep ? 'active-box' : ''}`;
+                box.innerText = i === mineStep ? "🔍 اكشف" : "🔒 مغلق";
+                
                 box.onclick = () => {
-                    playSynthSound('click');
-                    hapticFeedback();
-                    runAISimulation('goldmine', () => revealMineStep(i));
+                    if(i !== mineStep) return;
+                    let correct = winningPaths[i];
+                    let boxes = row.querySelectorAll('.mine-box');
+                    
+                    for(let k=0; k<mineMode; k++) {
+                        boxes[k].onclick = null;
+                        if(k === correct) {
+                            boxes[k].innerHTML = "🪙 ذهب"; boxes[k].style.background = "rgba(0,255,102,0.2)"; boxes[k].style.borderColor = "var(--neon-green)";
+                        } else {
+                            boxes[k].innerHTML = "🧨 ديناميت"; boxes[k].style.background = "rgba(255,0,85,0.2)"; boxes[k].style.borderColor = "var(--neon-pink)";
+                        }
+                    }
+
+                    mineStep++;
+                    if(mineStep < 6) {
+                        document.getElementById('mine-step').innerText = mineStep + 1;
+                        let nextRow = document.getElementById(`mine-row-${mineStep}`);
+                        if(nextRow) {
+                            nextRow.classList.add('active');
+                            let nextBoxes = nextRow.querySelectorAll('.mine-box');
+                            nextBoxes.forEach(nb => {
+                                nb.classList.add('active-box'); nb.innerText = "🔍 اكشف";
+                            });
+                        }
+                    } else {
+                        alert("تهانينا! وصلت للقمة بنجاح 🏆");
+                    }
                 };
                 row.appendChild(box);
             }
             ladder.appendChild(row);
         }
-        document.getElementById('currentStepText').innerText = mineCurrentStep + 1;
-    }
-
-    function revealMineStep(step) {
-        if (step !== mineCurrentStep) return;
-        playSynthSound('success');
-        const correctIndex = mineWinningPaths[step];
-        const row = document.getElementById(`row-${step}`);
-        const boxes = row.children;
-
-        for (let j = 0; j < boxes.length; j++) {
-            boxes[j].onclick = null;
-            if (j === correctIndex) {
-                boxes[j].innerHTML = "🪙 ذهب"; boxes[j].className = "mine-box revealed-gold";
-            } else {
-                boxes[j].innerHTML = "🧨 ديناميت"; boxes[j].className = "mine-box revealed-bomb";
-            }
-        }
-
-        mineCurrentStep++;
-        if (mineCurrentStep < mineTotalSteps) {
-            document.getElementById('mineMessage').innerText = "ممتاز! اصعد للخطوة التالية للأعلى ⚡";
-            const nextRow = document.getElementById(`row-${mineCurrentStep}`);
-            if (nextRow) {
-                for (let box of nextRow.children) {
-                    box.className = "mine-box active";
-                    box.innerText = "🔍 اكشف";
-                    box.onclick = () => {
-                        playSynthSound('click');
-                        hapticFeedback();
-                        runAISimulation('goldmine', () => revealMineStep(mineCurrentStep));
-                    };
-                }
-            }
-        } else {
-            document.getElementById('mineMessage').innerText = "وصلت للقمة وتم كشف جميع الخطوات بنجاح! 🏆";
-            document.getElementById('nextSignalBtn').style.display = 'block';
-        }
-        document.getElementById('currentStepText').innerText = Math.min(mineCurrentStep + 1, mineTotalSteps);
-    }
-
-    function resetToMineMenu() {
-        currentActiveGame = null;
-        document.getElementById('mineGameArea').style.display = 'none';
-        document.getElementById('mineMainMenu').style.display = 'block';
     }
 </script>
 </body>
