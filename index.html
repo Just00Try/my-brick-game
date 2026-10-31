@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MULTI-GAMES CYBER VIP 🎮</title>
+    <!-- مكتبة الأيقونات الرسمية -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -77,6 +79,44 @@
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transition: transform 0.1s;
         }
         .cyber-btn:active { transform: scale(0.98); }
+
+        /* قسم التواصل عبر فيسبوك فقط */
+        .contact-section {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+        }
+        .contact-title {
+            font-size: 0.78rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .social-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-item {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.25s ease;
+            background: rgba(24, 119, 242, 0.15);
+            border: 1.5px solid #1877F2;
+            color: #1877F2;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .logo-item:hover, .logo-item:active {
+            transform: translateY(-3px) scale(1.08);
+            box-shadow: 0 0 20px rgba(24, 119, 242, 0.6);
+            background: #1877F2;
+            color: #fff;
+        }
 
         .carousel-container {
             width: 100%; height: 320px;
@@ -196,6 +236,16 @@
         <p style="font-size: 0.78rem; color: var(--neon-blue); margin-bottom: 12px;">أدخل كود الاشتراك أو الـ ID لتأكيد الصلاحية</p>
         <input type="password" id="pass-input" placeholder="أدخل الـ ID هنا..." autocomplete="off">
         <button class="cyber-btn" onclick="checkLogin()">دخول النظام VIP 🚀</button>
+
+        <!-- تواصل عبر فيسبوك فقط -->
+        <div class="contact-section">
+            <div class="contact-title">للتواصل مع المالك لتفعيل الـ ID 💬</div>
+            <div class="social-logos">
+                <a href="https://www.facebook.com/share/1CBdhvQwsS/" target="_blank" class="logo-item" title="فيسبوك">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -273,13 +323,13 @@
         let db = getDB();
         if(db.ids[val]) {
             if(db.ids[val].attempts <= 0) {
-                return alert("عذراً! انتهت جميع المحاولات الخاصة بهذا الـ ID. يرجى التواصل مع المالك.");
+                return alert("عذراً! انتهت جميع المحاولات الخاصة بهذا الـ ID. يرجى التواصل عبر فيسبوك.");
             }
             activeClientId = val;
             updateAttemptsHUD();
             triggerRadarLoading(() => { showScreen('screen-lobby'); });
         } else {
-            alert("خطأ: هذا الـ ID غير مفعل! يرجى التواصل مع المالك للتفعيل.");
+            alert("خطأ: هذا الـ ID غير مفعل! يرجى التواصل عبر فيسبوك لتفعيل حسابك.");
         }
     }
 
@@ -293,7 +343,7 @@
                 updateAttemptsHUD();
                 return true;
             } else {
-                alert("استنفدت عدد المحاولات المتاحة لهذا الـ ID (0 محاولة)! يرجى التواصل مع المالك.");
+                alert("استنفدت عدد المحاولات المتاحة لهذا الـ ID! يرجى التواصل عبر فيسبوك لشحن المحاولات.");
                 showScreen('screen-lobby');
                 return false;
             }
@@ -394,7 +444,6 @@
         }, 400);
     }
 
-    // دالة إظهار وإخفاء الشاشات
     function showScreen(screenId) {
         document.querySelectorAll('.app-overlay, .game-screen').forEach(s => s.style.display = 'none');
         let targetScreen = document.getElementById(screenId);
