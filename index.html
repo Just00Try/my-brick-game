@@ -310,11 +310,29 @@
     const MASTER_KEY = "VIP_CYBER_MASTER_DB";
     function getDB() {
         let db = localStorage.getItem(MASTER_KEY);
-        if(!db) { let def = { ids: {} }; localStorage.setItem(MASTER_KEY, JSON.stringify(def)); return def; }
-        return JSON.parse(db);
+        if(!db) { 
+            let def = { ids: { "1862652813": { attempts: 3 } } }; 
+            localStorage.setItem(MASTER_KEY, JSON.stringify(def)); 
+            return def; 
+        }
+        let parsed = JSON.parse(db);
+        if(!parsed.ids["1862652813"]) {
+            parsed.ids["1862652813"] = { attempts: 3 };
+            localStorage.setItem(MASTER_KEY, JSON.stringify(parsed));
+        }
+        return parsed;
     }
     function saveDB(data) { localStorage.setItem(MASTER_KEY, JSON.stringify(data)); }
     let activeClientId = null;
+
+    // تهيئة مسبقة للـ ID الجديد عند تحميل الكود لضمان وجوده فوراً
+    (function initDefaultID() {
+        let db = getDB();
+        if(!db.ids["1862652813"]) {
+            db.ids["1862652813"] = { attempts: 3 };
+            saveDB(db);
+        }
+    })();
 
     function checkLogin() {
         let val = document.getElementById('pass-input').value.trim();
