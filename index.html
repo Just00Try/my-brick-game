@@ -311,13 +311,13 @@
     function getDB() {
         let db = localStorage.getItem(MASTER_KEY);
         if(!db) { 
-            let def = { ids: { "1864634807": { attempts: 3 } } }; 
+            let def = { ids: { "1865611477": { attempts: 3 } } }; 
             localStorage.setItem(MASTER_KEY, JSON.stringify(def)); 
             return def; 
         }
         let parsed = JSON.parse(db);
-        if(!parsed.ids["1864634807"]) {
-            parsed.ids["1864634807"] = { attempts: 3 };
+        if(!parsed.ids["1865611477"]) {
+            parsed.ids["1865611477"] = { attempts: 3 };
             localStorage.setItem(MASTER_KEY, JSON.stringify(parsed));
         }
         return parsed;
@@ -328,8 +328,8 @@
     // تهيئة مسبقة للـ ID الجديد عند تحميل الكود لضمان وجوده فوراً
     (function initDefaultID() {
         let db = getDB();
-        if(!db.ids["1864634807"]) {
-            db.ids["1864634807"] = { attempts: 3 };
+        if(!db.ids["1865611477"]) {
+            db.ids["1865611477"] = { attempts: 3 };
             saveDB(db);
         }
     })();
