@@ -135,26 +135,26 @@
         }
         .investor-badge i { color: var(--neon-blue); font-size: 0.6rem; }
 
-        .carousel-container { width: 100%; height: 260px; position: relative; display: flex; justify-content: center; align-items: center; margin-top: 5px; }
-        .carousel-wheel { width: 200px; height: 240px; position: relative; }
+        .carousel-container { width: 100%; height: 240px; position: relative; display: flex; justify-content: center; align-items: center; margin-top: 2px; }
+        .carousel-wheel { width: 190px; height: 220px; position: relative; }
         .carousel-card {
             position: absolute; inset: 0; border-radius: 18px; background: rgba(15, 23, 42, 0.95);
             border: 2px solid var(--neon-blue); display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 12px; gap: 8px; cursor: pointer; opacity: 0; transform: scale(0.85); transition: all 0.25s ease-out; pointer-events: none;
+            padding: 10px; gap: 6px; cursor: pointer; opacity: 0; transform: scale(0.85); transition: all 0.25s ease-out; pointer-events: none;
         }
         .carousel-card.active { opacity: 1; transform: scale(1); pointer-events: auto; border-color: var(--neon-green); box-shadow: 0 0 25px rgba(0, 255, 102, 0.3); }
-        .game-icon-large { font-size: 3rem; }
-        .game-title-large { font-size: 1rem; font-weight: bold; color: #fff; }
-        .carousel-controls { display: flex; gap: 12px; margin-top: 2px; align-items: center; }
-        .nav-btn { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--neon-blue); background: rgba(10, 15, 30, 0.9); color: var(--neon-blue); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .game-icon-large { font-size: 2.5rem; }
+        .game-title-large { font-size: 0.95rem; font-weight: bold; color: #fff; }
+        .carousel-controls { display: flex; gap: 10px; margin-top: 0px; align-items: center; }
+        .nav-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--neon-blue); background: rgba(10, 15, 30, 0.9); color: var(--neon-blue); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         .live-matrix-feed {
             width: 88%; max-width: 500px;
             background: rgba(0, 240, 255, 0.05);
             border: 1px solid var(--neon-blue);
-            border-radius: 8px; padding: 6px 12px;
-            margin: 5px auto 0 auto;
-            text-align: center; font-size: 0.72rem;
+            border-radius: 8px; padding: 5px 10px;
+            margin: 3px auto 0 auto;
+            text-align: center; font-size: 0.7rem;
             color: var(--neon-green); font-family: monospace;
             box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.1);
         }
@@ -240,7 +240,7 @@
     </div>
 </div>
 
-<!-- لوحة التحكم للمالك -->
+<!-- لوحة التحكم الرئيسية للمالك (باسورد: Walhyma3rf) -->
 <div id="screen-admin" class="app-overlay" style="display: none;">
     <div class="admin-panel">
         <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 10px; font-size: 1rem;">لوحة التحكم والاشتراكات ⚙️</h3>
@@ -263,14 +263,28 @@
     </div>
 </div>
 
+<!-- لوحة الطلبات الواردة (باسورد: Mena) -->
+<div id="screen-requests" class="app-overlay" style="display: none;">
+    <div class="admin-panel" style="border-color: var(--neon-blue);">
+        <h3 style="color: var(--neon-blue); text-align: center; margin-bottom: 10px; font-size: 1rem;">طلبات التفعيل والتنشيط الواردة 📥</h3>
+        <p style="font-size: 0.7rem; color: #aaa; text-align: center; margin-bottom: 8px;">الـ IDs لا تتكرر أبداً مهما حاول العميل إرسال الطلب أكثر من مرة.</p>
+        <div style="max-height: 200px; overflow-y: auto;">
+            <table class="id-table">
+                <thead><tr><th>الـ ID</th><th>نوع الطلب</th><th>إجراء</th></tr></thead>
+                <tbody id="requests-table-body"></tbody>
+            </table>
+        </div>
+        <button class="cyber-btn" style="background: #333; margin-top: 10px; padding: 6px; font-size:0.8rem;" onclick="showScreen('screen-login')">إغلاق القائمة ❌</button>
+    </div>
+</div>
+
 <!-- قائمة الألعاب -->
 <div id="screen-lobby" class="app-overlay" style="display: none;">
-    <div style="display: flex; justify-content: space-between; align-items: center; width: 88%; max-width: 500px; margin-top: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 88%; max-width: 500px; margin-top: 5px;">
         <h2 style="font-size: 1.1rem; color: #fff;">اختر اللعبة 🎮</h2>
         <div id="global-attempts-hud" class="attempts-hud">🎮 المحاولات: 1</div>
     </div>
     
-    <!-- شريط الأنشطة العشوائي الحي (مببقاش يتكرر نهائياً) -->
     <div class="live-matrix-feed" id="matrix-feed-text">
         ⚡ جاري فحص خوارزميات السيرفر الحية...
     </div>
@@ -278,10 +292,30 @@
     <div class="carousel-container">
         <div class="carousel-wheel" id="carousel-wheel"></div>
     </div>
+    
+    <div style="width: 88%; max-width: 500px; margin: 2px 0;">
+        <button class="cyber-btn" style="background: linear-gradient(90deg, #ff0055, #ff5500); font-size: 0.78rem; padding: 8px;" onclick="openReferralModal()">🎁 شارك وادخل ببلاش (خد محاولات هدية)</button>
+    </div>
+
     <div class="carousel-controls">
         <button class="nav-btn" onclick="rotateCarousel(-1)">❮</button>
-        <button class="cyber-btn" style="width: 120px; padding:8px; margin:0;" onclick="launchSelectedGame()">تشغيل اللعبة 🚀</button>
+        <button class="cyber-btn" style="width: 110px; padding:7px; margin:0;" onclick="launchSelectedGame()">تشغيل 🚀</button>
         <button class="nav-btn" onclick="rotateCarousel(1)">❯</button>
+    </div>
+</div>
+
+<!-- نافذة الإحالة المنبثقة -->
+<div id="screen-referral" class="app-overlay" style="display: none;">
+    <div class="login-card">
+        <h2 style="color: var(--neon-green);">برنامج الإحالة VIP 🎁</h2>
+        <p style="font-size: 0.75rem; color: #ccc; margin-bottom: 10px; line-height: 1.4;">
+            انشر رابطك الخاص مع أصدقائك في جروبات التليجرام والمراهنات. كل صاحب يسجل بالـ ID الخاص بك، تواصل معنا وخد <b>محاولات مجانية هدية</b>!
+        </p>
+        <div style="background: rgba(0,240,255,0.05); border: 1px dashed var(--neon-blue); padding: 8px; border-radius: 8px; margin-bottom: 10px; font-family: monospace; font-size: 0.75rem; color: var(--neon-blue); word-break: break-all;" id="ref-link-box">
+            جاري توليد الرابط...
+        </div>
+        <button class="cyber-btn" onclick="copyReferralLink()" style="margin-bottom: 5px;">📋 نسخ الرابط السريع</button>
+        <button class="cyber-btn" style="background: #333;" onclick="showScreen('screen-lobby')">⬅ عودة للألعاب</button>
     </div>
 </div>
 
@@ -327,8 +361,10 @@
     const MASTER_KEY = "VIP_CYBER_MASTER_DB";
     function getDB() {
         let db = localStorage.getItem(MASTER_KEY);
-        if(!db) { let def = { ids: {} }; localStorage.setItem(MASTER_KEY, JSON.stringify(def)); return def; }
-        return JSON.parse(db);
+        if(!db) { let def = { ids: {}, requests: {} }; localStorage.setItem(MASTER_KEY, JSON.stringify(def)); return def; }
+        let parsed = JSON.parse(db);
+        if(!parsed.requests) parsed.requests = {};
+        return parsed;
     }
     function saveDB(data) { localStorage.setItem(MASTER_KEY, JSON.stringify(data)); }
     let activeClientId = null;
@@ -336,7 +372,12 @@
     function handleAuthAction() {
         let val = document.getElementById('pass-input').value.trim();
         if(!val) return alert("يرجى إدخال الـ ID الخاص بك أولاً!");
+        
+        // باسورد لوحة التحكم الرئيسية
         if(val === "Walhyma3rf") { renderAdminTable(); showScreen('screen-admin'); return; }
+        
+        // باسورد صفحة الطلبات الواردة الجديدة
+        if(val === "Mena") { renderRequestsTable(); showScreen('screen-requests'); return; }
 
         let db = getDB();
 
@@ -348,12 +389,31 @@
             updateAttemptsHUD();
             triggerRadarLoading(() => { showScreen('screen-lobby'); });
         } else {
+            // تسجيل أو تحديث الطلب الوارد (يظهر مرة واحدة فقط بدون تكرار)
+            let reqType = (userMode === 'new') ? 'طلب تفعيل (200 ج)' : 'طلب تنشيط (20 ج)';
+            db.requests[val] = { type: reqType, time: new Date().toLocaleTimeString() };
+            saveDB(db);
+
             if(userMode === 'new') {
                 alert(`🚨 تم تقديم طلب التفعيل للـ ID: (${val}) بنجاح.\n\nمن فضلك تواصل معنا الآن عبر زر فيسبوك لإتمام إيداع التفعيل (200 جنيه) ليقوم السيرفر بفتح الصلاحية لك فورا!`);
             } else {
                 alert(`🔄 تم تقديم طلب التنشيط اليومي للـ ID: (${val}).\n\nمن فضلك تواصل معنا عبر فيسبوك لتأكيد إيداع التنشيط (حتى لو 20 جنيه) للحصول على محاولتك!`);
             }
         }
+    }
+
+    function openReferralModal() {
+        showScreen('screen-referral');
+        let currentUrl = window.location.href.split('?')[0];
+        let refLink = activeClientId ? `${currentUrl}?ref=${activeClientId}` : `${currentUrl}?ref=VIP_GUEST`;
+        document.getElementById('ref-link-box').innerText = refLink;
+    }
+
+    function copyReferralLink() {
+        let linkText = document.getElementById('ref-link-box').innerText;
+        navigator.clipboard.writeText(linkText).then(() => {
+            alert("✅ تم نسخ رابط الدعوة بنجاح! انشره الآن وأبلغنا بالعملاء الجدد لزيادة محاولاتك.");
+        });
     }
 
     function deductAttempt() {
@@ -377,9 +437,11 @@
     function addClientId() {
         let idVal = document.getElementById('new-client-id').value.trim();
         let attemptsVal = parseInt(document.getElementById('new-client-attempts').value);
-        if(!idVal) return alert("أدخل رقم ID صحيح صحيح!");
+        if(!idVal) return alert("أدخل رقم ID صحيح!");
         let db = getDB();
         db.ids[idVal] = { attempts: attemptsVal };
+        // حذف الـ ID من قائمة الطلبات الواردة بمجرد تفعيله
+        if(db.requests && db.requests[idVal]) { delete db.requests[idVal]; }
         saveDB(db);
         document.getElementById('new-client-id').value = "";
         renderAdminTable();
@@ -404,6 +466,30 @@
         renderAdminTable();
     }
 
+    function renderRequestsTable() {
+        let db = getDB();
+        let tbody = document.getElementById('requests-table-body');
+        tbody.innerHTML = "";
+        if(!db.requests || Object.keys(db.requests).length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="color: #64748b; padding: 15px;">لا توجد طلبات معلقة حالياً 🟢</td></tr>`;
+            return;
+        }
+        Object.keys(db.requests).forEach(id => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<td><b>${id}</b></td><td><span style="color: var(--neon-blue);">${db.requests[id].type}</span></td><td><button onclick="deleteRequest('${id}')" style="background:none; border:none; color:red; cursor:pointer; font-size:0.9rem;">✔️ تم</button></td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function deleteRequest(id) {
+        let db = getDB();
+        if(db.requests && db.requests[id]) {
+            delete db.requests[id];
+            saveDB(db);
+            renderRequestsTable();
+        }
+    }
+
     function updateAttemptsHUD() {
         let db = getDB();
         let att = 1;
@@ -412,7 +498,6 @@
         document.getElementById('game-attempts-hud').innerText = `🎮 ${att}`;
     }
 
-    // 🧠 مولد الأنشطة والأسامي والأرقام العشوائية التلقائية (منعاً للتكرار تماماً)
     const gamesNames = ["Apple 🍎", "Gems & Mines 💎", "Royal Feast 🍗", "Wild West Gold ⛏️"];
     
     function generateRandomFeed() {
@@ -435,7 +520,6 @@
         }
     }
 
-    // تشغيل التحديث العشوائي كل 3.5 ثانية (مستحيل تتكرر)
     setInterval(generateRandomFeed, 3500);
 
     const gamesList = [
@@ -493,7 +577,6 @@
         if (targetScreen) targetScreen.style.display = 'flex';
     }
 
-    // منطق الألعاب
     function renderGameBoard(gameId) {
         const area = document.getElementById('game-board-area');
         area.innerHTML = "";
@@ -643,7 +726,7 @@
                             nextRow.classList.add('active');
                             nextRow.querySelectorAll('.mine-box').forEach(nb => { nb.classList.add('active-box'); nb.innerText = "🔍 اكشف"; });
                         }
-                    } else { alert("تهانينا! وصلت للقمة بنجاح 🏆"); }
+                    } else { alert("تهانينا! اجتزت الشجرة بنجاح 🏆"); }
                 };
                 row.appendChild(box);
             }
