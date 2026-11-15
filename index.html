@@ -37,3 +37,53 @@
         <button class="guest-btn" onclick="enterGuestMode()">👁️ جلسة زيارة للمعاينة</button>
     </div>
 </div>
+<div id="screen-lobby" class="app-overlay" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; margin-bottom: 15px;">
+        <button onclick="exitLobby()" style="padding: 5px 10px; border-radius: 6px; border: 1px solid var(--neon-blue); background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); font-weight: bold; cursor: pointer;">🚪 خروج</button>
+        <h2 style="font-size: 1rem;">اختر اللعبة 🎮</h2>
+        <div id="global-attempts-hud" class="attempts-hud">🎮 المحاولات: 0</div>
+    </div>
+    <div class="login-card">
+        <h3 style="color: #00f0ff; margin-bottom: 10px;">منطقة الألعاب 🚀</h3>
+        <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 15px;">النظام يعمل بكفاءة وجاهز لتوليد التوقعات!</p>
+        <button class="cyber-btn" onclick="alert('🟢 تم توليد إشارة التوقع بنجاح!')">تشغيل التوقع ⚡</button>
+    </div>
+</div>
+
+<script>
+    let isGuestMode = false;
+    function selectUserType(type) {
+        let optNew = document.getElementById('opt-new'), optReg = document.getElementById('opt-registered'), rulesBox = document.getElementById('rules-text'), submitBtn = document.getElementById('submit-btn');
+        if(type === 'new') {
+            optNew.classList.add('selected'); optReg.classList.remove('selected');
+            rulesBox.innerHTML = `💡 لاعب جديد: اكتب الـ ID لطلب التفعيل (شحن 200 جنيه).`;
+            submitBtn.innerText = "طلب تفعيل التوقعات ⚡";
+        } else {
+            optReg.classList.add('selected'); optNew.classList.remove('selected');
+            rulesBox.innerHTML = `⭐ لاعب حالي: أدخل الـ ID للتنشيط (شحن 20 جنيه).`;
+            submitBtn.innerText = "تنشيط جلسة اليوم 🔄";
+        }
+    }
+    function enterGuestMode() {
+        isGuestMode = true;
+        document.getElementById('screen-login').style.display = 'none';
+        document.getElementById('screen-lobby').style.display = 'flex';
+        document.getElementById('global-attempts-hud').innerText = "👁️ وضع الزيارة";
+    }
+    function handleAuthAction() {
+        let val = document.getElementById('pass-input').value.trim();
+        if(!val) return alert("يرجى إدخال الـ ID أولاً!");
+        isGuestMode = false;
+        document.getElementById('screen-login').style.display = 'none';
+        document.getElementById('screen-lobby').style.display = 'flex';
+        document.getElementById('global-attempts-hud').innerText = "🎮 المحاولات: 1";
+    }
+    function exitLobby() {
+        document.getElementById('pass-input').value = "";
+        document.getElementById('screen-lobby').style.display = 'none';
+        document.getElementById('screen-login').style.display = 'flex';
+    }
+</script>
+</body>
+</html>
+
